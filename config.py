@@ -24,6 +24,11 @@ def get_ini_data(ini_path: str, section: str, section_item: str) -> str:
 		raise KeyError("Not Find '%s' In %s" % (section_item, section))
 
 
+def write_data(write_path: str, data: str, mode="w", encoding="UTF-8"):
+	with open(write_path, mode, encoding=encoding) as wr:
+		wr.write(data)
+
+
 conf_path = os.path.join(os.getcwd(), "resource/conf.ini")
 logo_path = get_ini_data(ini_path=conf_path, section="path", section_item="logo_path")
 our_path = get_ini_data(ini_path=conf_path, section="path", section_item="our_path")
@@ -36,6 +41,13 @@ parting_line = "-" * 200
 request_wait_time = 1
 # #### 两次弹幕发送间隔时间
 send_text_wait_time = 60
+# #### 加载网页最长等待时间
+wait_time_max = 30
+
+
+class PlatFormLogin(object):
+	DOU_YU = False
+	HU_YA = False
 
 
 class Platform(object):

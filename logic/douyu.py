@@ -16,6 +16,7 @@ class UrlGenerator(object):
 
 		self.browser = None
 
+		self.douyu_cookies = dict()
 		self.directory_games = dict()
 
 		self.douyu_game_type = list()
@@ -69,6 +70,7 @@ class UrlGenerator(object):
 			self.douyu_game_type.append(url)
 
 		return self.douyu_game_type
+
 
 #
 # def get_douyu_rooms(self):
