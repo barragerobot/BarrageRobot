@@ -19,9 +19,6 @@ class ViewMain(QMainWindow):
 
         self.view_size = view_size
         self.scree_size = scree_size
-
-        self.setWindowIcon(QIcon(config.logo_path))
-
         self.setWindowTitle(config.view_title)
 
         self.resize(self.view_size.width, self.view_size.height)
@@ -34,9 +31,9 @@ class ViewMain(QMainWindow):
         # self.setWindowTitle("弹幕自动化")
         # self.resize(1300, 800)
         # self.move(int((self.scree_size.width - 1200) / 2), int((self.scree_size.height - 800) / 2))
-        self.setWindowIcon(QIcon(config.our_path))
+        self.setWindowIcon(QIcon(config.logo_path))
         window_platte = QPalette()  # 设置背景图片
-        window_platte.setBrush(self.backgroundRole(), QBrush(QPixmap("E:\\work_baby\\picture\\bja.jpg")))
+        window_platte.setBrush(self.backgroundRole(), QBrush(QPixmap(config.background_path)))
         self.setPalette(window_platte)
         self.platform_input_box = QComboBox(self)
         self.fans_min_input_box = QComboBox(self)

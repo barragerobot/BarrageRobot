@@ -27,6 +27,7 @@ def get_ini_data(ini_path: str, section: str, section_item: str) -> str:
 conf_path = os.path.join(os.getcwd(), "resource/conf.ini")
 logo_path = get_ini_data(ini_path=conf_path, section="path", section_item="logo_path")
 our_path = get_ini_data(ini_path=conf_path, section="path", section_item="our_path")
+background_path = get_ini_data(ini_path=conf_path, section="path", section_item="background_path")
 
 view_title = "弹幕机器人 ----------------- Bill Is Most Handsome Of The World -----------------"
 parting_line = "-" * 200
