@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-from views import view_start, start
+# from views import view_start, start, qr_code
+from PyQt5.QtWidgets import QApplication
+
+from views import ViewLogin, ViewMain
+import sys
 
 # import threading
 
@@ -7,7 +11,9 @@ if __name__ == "__main__":
 	# import win32api
 	# import win32con
 	#
-	# win32api.keybd_event(122, 0, 0, 0)
-	# win32api.keybd_event(122, 0, win32con.KEYEVENTF_KEYUP, 0)  # 释放按键
-
-	start()
+	app = QApplication(sys.argv)
+	view_login = ViewLogin()
+	view_main = ViewMain()
+	view_login.show()
+	view_login.is_finish_login.connect(view_main.show)
+	sys.exit(app.exec_())

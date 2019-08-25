@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-
+from PIL import Image
 from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtGui import QIcon, QFont, QPalette, QColor
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QComboBox, QTextBrowser, QGraphicsOpacityEffect
-from PyQt5.QtWidgets import QPushButton
-from selenium.webdriver.chrome.options import Options
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from PyQt5.QtGui import QFont, QPalette, QColor
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTextBrowser, QGraphicsOpacityEffect, QPushButton
 from logic import url_pool
 import sys
 import config
@@ -14,6 +10,7 @@ import time
 import requests
 import bs4
 import traceback
+import os
 
 
 def get_log_str(msg: str):
@@ -26,6 +23,17 @@ def get_log_str(msg: str):
 		config.log_text_str = now_time + " -> " + msg + "\n" + config.log_text_str
 
 	return config.log_text_str
+
+
+class DouyuLogin(QThread):
+	log_msg = pyqtSignal(str)
+	is_finish = pyqtSignal(bool)
+
+	def __init__(self):
+		super().__init__(parent=None)
+
+	def run(self):
+		xpath_login_top = '//*[@id="js-header"]/div/div/div[3]/div[7]/div/div/a/span'
 
 
 class RoomStatistics(QThread):
@@ -106,6 +114,38 @@ class SendBarrage(QThread):
 				continue
 		return False
 
+	def request_url(self, url, xpath):
+		pass
+
+	def login(self):
+		xpath_login_top = '//*[@id="js-header"]/div/div/div[3]/div[7]/div/div/a/span'
+		xpath_qr_code = '/html/body/div[2]/div/div/div[2]/div[2]/div[2]/div[1]/div[1]/div/div[1]/div/div[1]'
+		self.sinOut.emit(get_log_str("二维码加载中"))
+		self.chrome_browser.get('https://www.douyu.com')
+		time.sleep(config.wait_time_max)
+		self.chrome_browser.maximize_window()
+		self.chrome_browser.set_page_load_timeout(config.wait_time_max)
+		config.write_data("E:\\work_bill\\BarrageRobot\\resource\\11.html", self.chrome_browser.page_source)
+		self.chrome_browser.find_element_by_xpath(xpath_login_top).click()
+		self.chrome_browser.set_page_load_timeout(config.wait_time_max)
+		time.sleep(config.wait_time_max)
+		# self.chrome_browser.save_screenshot("E:\\work_bill\\BarrageRobot\\resource\\image\\scree.png")
+		self.sinOut.emit(get_log_str("获得二维码"))
+
+		imgelement = self.chrome_browser.find_element_by_xpath(xpath_qr_code)
+		locations = imgelement.location
+		sizes = imgelement.size
+		rangle = (int(locations['x']), int(locations['y']), int(locations['x'] + sizes['width']),
+				  int(locations['y'] + sizes['height']))
+		path_1 = os.getcwd() + "\\resource\\image\\code_1.png"
+		path_2 = os.getcwd() + "\\resource\\image\\code_2.png"
+		self.chrome_browser.save_screenshot(path_1)
+		img = Image.open(str(path_1) + ".png")
+
+		jpg = img.crop(rangle)
+
+		jpg.save(str(path_2) + ".png")
+
 	def run(self):
 
 		xpath_login_top = '//*[@id="js-header"]/div/div/div[3]/div[7]/div/div/a/span'
@@ -115,11 +155,9 @@ class SendBarrage(QThread):
 		xpath_first_link = '//*[@id="js-header"]/div/div/div[1]/div/ul/li[1]/a'
 
 		self.sinOut.emit(get_log_str("开始发送弹幕"))
-		chrome_options = Options()
-		chrome_options.add_argument('--headless')
-		chrome_options.add_argument('--disable-gpu')
+
 		# chrome_options=chrome_options
-		self.chrome_browser = webdriver.Chrome(chrome_options=chrome_options)
+
 		self.chrome_browser.get('https://www.douyu.com/101')
 
 		try:
@@ -187,6 +225,9 @@ class ViewMain(QMainWindow):
 		self.send_barrage.sinOut.connect(self.send_log)
 		self.send_barrage.is_finish.connect(self.check_finish)
 
+	def show_my_self(self):
+		self.show()
+
 	def set_log_browser_style(self):
 		self.log_browser.setGeometry(1, 300, 1200, 500)
 		self.log_browser.setStyleSheet("""background:#E98316""")
@@ -234,7 +275,7 @@ class ViewMain(QMainWindow):
 		pass
 
 	def on_click_btn_login_douyu(self):
-		pass
+		self.send_barrage.login()
 
 	def on_click_btn_login_huya(self):
 		pass
@@ -258,8 +299,8 @@ class ViewMain(QMainWindow):
 		self.log_browser.setText(msg)
 
 
-def start():
-	app = QApplication(sys.argv)
-	view_main = ViewMain()
-	view_main.show()
-	sys.exit(app.exec_())
+# def start():
+# 	# app = QApplication(sys.argv)
+# 	view_main = ViewMain()
+# 	view_main.show()
+# # sys.exit(app.exec_())

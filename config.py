@@ -2,6 +2,9 @@
 import os
 import configparser
 
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+
 
 def get_ini_data(ini_path: str, section: str, section_item: str) -> str:
 	conf = configparser.ConfigParser()
@@ -29,13 +32,23 @@ def write_data(write_path: str, data: str, mode="w", encoding="UTF-8"):
 		wr.write(data)
 
 
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--disable-gpu')
+# chrome_options=chrome_options
+# executable_path=os.getcwd() + "\\chromedriver", chrome_options=chrome_options
+# webdriver.Chrome()
+chrome_browser = None
+
 conf_path = os.path.join(os.getcwd(), "resource/conf.ini")
 logo_path = get_ini_data(ini_path=conf_path, section="path", section_item="logo_path")
 our_path = get_ini_data(ini_path=conf_path, section="path", section_item="our_path")
 background_path = get_ini_data(ini_path=conf_path, section="path", section_item="background_path")
+account_path = get_ini_data(ini_path=conf_path, section="path", section_item="account_path")
+
 log_text_str = ""
 
-view_title = "弹幕机器人 ----------------- Bill Is Most Handsome Of The World -----------------"
+view_title = "弹幕机器人 ---------- Bill Is Most Handsome Of The World ---------- "
 parting_line = "-" * 200
 # #### 默认请求间隔时间
 request_wait_time = 1
