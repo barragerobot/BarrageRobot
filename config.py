@@ -45,6 +45,8 @@ logo_path = get_ini_data(ini_path=conf_path, section="path", section_item="logo_
 our_path = get_ini_data(ini_path=conf_path, section="path", section_item="our_path")
 background_path = get_ini_data(ini_path=conf_path, section="path", section_item="background_path")
 account_path = get_ini_data(ini_path=conf_path, section="path", section_item="account_path")
+cookies_path = get_ini_data(ini_path=conf_path, section="path", section_item="cookies_path")
+
 
 log_text_str = ""
 

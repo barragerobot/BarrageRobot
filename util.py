@@ -234,3 +234,17 @@ def start_timer(t):
 	while time.time() - start_time < t:
 		print(int(time.time() - start_time))
 		time.sleep(1)
+
+
+def find_xpath_in_xml(driver, xpath):
+	count = 100
+	while count > 0:
+		count -= 1
+		time.sleep(1)
+		try:
+			driver.find_element_by_xpath(xpath=xpath)
+			return True
+		except:
+			print("not found, go on")
+			continue
+	return False

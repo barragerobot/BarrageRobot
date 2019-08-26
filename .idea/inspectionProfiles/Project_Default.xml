@@ -18,6 +18,7 @@
           <option value="str.connect" />
           <option value="int.connect" />
           <option value="PyQt5.QtCore.Qt.Qt.WindowFlags" />
+          <option value="logging.Logger.root" />
         </list>
       </option>
     </inspection_tool>
