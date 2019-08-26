@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
 import os
-import sys
 import time
 
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -10,7 +8,7 @@ import re
 import util
 
 import config
-from PyQt5.QtWidgets import QMessageBox, QLineEdit, QRadioButton, QGridLayout, QPushButton, QMainWindow, QApplication
+from PyQt5.QtWidgets import QMessageBox, QLineEdit, QRadioButton, QPushButton, QMainWindow
 
 
 class ViewLogin(QMainWindow, QThread):
@@ -135,13 +133,6 @@ class ViewLogin(QMainWindow, QThread):
 			print(type(account_info))
 			account_info = eval(account_info)
 			print("third", account_info)
-			# try:
-			# 	account_info = eval(account_info)
-			# 	print("third", account_info)
-			# except:
-			# 	import traceback
-			# 	traceback.print_exc()
-			# account_info = util.read_json_file(file_path=config.account_path)
 			check_account = account_info["account"] == account
 			check_password = account_info["password"] == password
 		else:
@@ -154,12 +145,12 @@ class ViewLogin(QMainWindow, QThread):
 		else:
 			return False
 
-# noinspection PyTypeChecker
-# def closeEvent(self, event):
-#
-# 	reply = QMessageBox.question(self, 'Msg', "确定退出？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-#
-# 	if reply == QMessageBox.Yes:
-# 		event.accept()
-# 	else:
-# 		event.ignore()
+	# noinspection PyTypeChecker
+	def closeEvent(self, event):
+	
+		reply = QMessageBox.question(self, 'Msg', "确定退出？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+	
+		if reply == QMessageBox.Yes:
+			event.accept()
+		else:
+			event.ignore()
